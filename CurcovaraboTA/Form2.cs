@@ -24,16 +24,28 @@ namespace CurcovaraboTA
 
             if (textBox100.Text == Password)
             {
-                
+               
             }
             else
+            {
                 MessageBox.Show("Пароль не верен!");
+                textBox100.Clear();
+            }
+                   
+
+            
+           
 
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

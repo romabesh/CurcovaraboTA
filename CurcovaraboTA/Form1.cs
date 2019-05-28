@@ -18,53 +18,63 @@ namespace CurcovaraboTA
         public Form1()
         {
             InitializeComponent();
+
             //Form2 PF = new Form2();
-            
+            //
             //if (PF.ShowDialog() == DialogResult.Cancel)
-                //Application.Exit();
+            //    Application.Exit();
         }
 
         private void label13_Click(object sender, EventArgs e)
         {
 
+
         }
+        public string qwe;
 
-        private async void Form1_Load(object sender, EventArgs e)
+        public void metod(string qwe)
         {
-            
-
             string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
 
-            sqlConnection = new SqlConnection(connectionString);
+            SqlConnection myConnection = new SqlConnection(connectionString);
 
-            await sqlConnection.OpenAsync();
+            myConnection.Open();
 
-            SqlDataReader sqlReader = null;
+            string query = qwe;
 
-            SqlCommand command = new SqlCommand("SELECT * FROM [Products]",sqlConnection);
+            SqlCommand command = new SqlCommand(query, myConnection);
 
-            try
+            SqlDataReader reader = command.ExecuteReader();
+
+            List<string[]> data = new List<string[]>();
+
+            while (reader.Read())
             {
-                sqlReader = await command.ExecuteReaderAsync();
+                data.Add(new string[8]);
 
-                while(await sqlReader.ReadAsync())
-                {
-                    listBox1.Items.Add(Convert.ToString(sqlReader["id"] + "\t") + Convert.ToString(sqlReader["NameShop"] + "\t") +
-                        Convert.ToString(sqlReader["Adress"] + "\t") + Convert.ToString(sqlReader["Code"] + "\t") +
-                        Convert.ToString(sqlReader["NameProducts"] + "\t") + Convert.ToString(sqlReader["quantity"] + "\t")
-                        + Convert.ToString(sqlReader["Price"]) /*Convert.ToString(" SELECT (@Price * @quantity) AS Sum FROM Table")*/
-                    );
-                }
+                data[data.Count - 1][0] = reader[0].ToString();
+                data[data.Count - 1][1] = reader[1].ToString();
+                data[data.Count - 1][2] = reader[2].ToString();
+                data[data.Count - 1][3] = reader[3].ToString();
+                data[data.Count - 1][4] = reader[4].ToString();
+                data[data.Count - 1][5] = reader[5].ToString();
+                data[data.Count - 1][6] = reader[6].ToString();
+                data[data.Count - 1][7] = reader[7].ToString();
+                //"Select Sum(Price * quantity)FROM Products";
             }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message.ToString(), ex.Source.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                if (sqlReader != null)
-                    sqlReader.Close();
-            }
+
+            reader.Close();
+
+            myConnection.Close();
+
+            foreach (string[] s in data)
+                dataGridView1.Rows.Add(s);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            string qwe = "SELECT * FROM Products ORDER BY id";
+            metod(qwe);
         }
 
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
@@ -90,12 +100,8 @@ namespace CurcovaraboTA
 
             sqlConnection = new SqlConnection(connectionString);
 
-            await sqlConnection.OpenAsync();
-
-            SqlDataReader sqlReader = null;
-            
-            if(!string.IsNullOrEmpty(textBox6.Text) && !string.IsNullOrWhiteSpace(textBox6.Text)&&
-                !string.IsNullOrEmpty(textBox5.Text) && !string.IsNullOrWhiteSpace(textBox5.Text)&&
+            if (!string.IsNullOrEmpty(textBox6.Text) && !string.IsNullOrWhiteSpace(textBox6.Text) &&
+                !string.IsNullOrEmpty(textBox5.Text) && !string.IsNullOrWhiteSpace(textBox5.Text) &&
                 !string.IsNullOrEmpty(textBox4.Text) && !string.IsNullOrWhiteSpace(textBox4.Text) &&
                 !string.IsNullOrEmpty(textBox3.Text) && !string.IsNullOrWhiteSpace(textBox3.Text) &&
                 !string.IsNullOrEmpty(textBox2.Text) && !string.IsNullOrWhiteSpace(textBox2.Text) &&
@@ -112,16 +118,14 @@ namespace CurcovaraboTA
                 command.Parameters.AddWithValue("NameProducts", textBox2.Text);
                 command.Parameters.AddWithValue("quantity", textBox1.Text);
                 command.Parameters.AddWithValue("Price", textBox14.Text);
-               
-               await command.ExecuteNonQueryAsync();
 
+                await sqlConnection.OpenAsync();
+                await command.ExecuteNonQueryAsync();
             }
             else
             {
                 MessageBox.Show("Не все поля заполнены");
             }
-
-            
         }
 
         private void textBox6_TextChanged(object sender, EventArgs e)
@@ -139,26 +143,18 @@ namespace CurcovaraboTA
 
         }
 
-        private async void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
+        private void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-            listBox1.Items.Clear();
+            dataGridView1.Rows.Clear();
 
             SqlDataReader sqlReader = null;
 
-            SqlCommand command = new SqlCommand("SELECT * FROM[Products]", sqlConnection);
+            qwe = "SELECT * FROM[Products]";
 
+            SqlCommand command = new SqlCommand(qwe, sqlConnection);
             try
             {
-                sqlReader = await command.ExecuteReaderAsync();
-
-                while (await sqlReader.ReadAsync())
-                {
-                    listBox1.Items.Add(Convert.ToString(sqlReader["id"] + "\t") + Convert.ToString(sqlReader["NameShop"] + "\t") +
-                       Convert.ToString(sqlReader["Adress"] + "\t") + Convert.ToString(sqlReader["Code"] + "\t") +
-                       Convert.ToString(sqlReader["NameProducts"] + "\t") + Convert.ToString(sqlReader["quantity"] + "\t")
-                       + Convert.ToString(sqlReader["Price"]));
-                }
+                metod(qwe);
             }
             catch (Exception ex)
             {
@@ -168,13 +164,15 @@ namespace CurcovaraboTA
             {
                 if (sqlReader != null)
                     sqlReader.Close();
-
             }
 
         }
 
         private async void button2_Click(object sender, EventArgs e)
-        {   
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
+
+            sqlConnection = new SqlConnection(connectionString);
 
             if (!string.IsNullOrEmpty(textBox7.Text) && !string.IsNullOrWhiteSpace(textBox7.Text) &&
                 !string.IsNullOrEmpty(textBox8.Text) && !string.IsNullOrWhiteSpace(textBox8.Text) &&
@@ -186,7 +184,7 @@ namespace CurcovaraboTA
             {
                 SqlCommand command = new SqlCommand("UPDATE [Products] SET [NameShop]=@NameShop" +
                     ",[Adress]= @Adress,[Code]=@Code,[NameProducts]=@NameProducts,[quantity]=@quantity" +
-                    ",[Price]=@Price WHERE [Id]= @Id",sqlConnection);
+                    ",[Price]=@Price WHERE [Id]= @Id", sqlConnection);
 
                 command.Parameters.AddWithValue("Id", textBox12.Text);
                 command.Parameters.AddWithValue("NameShop", textBox15.Text);
@@ -196,10 +194,10 @@ namespace CurcovaraboTA
                 command.Parameters.AddWithValue("quantity", textBox8.Text);
                 command.Parameters.AddWithValue("Price", textBox7.Text);
 
-                MessageBox.Show(command.CommandText);
+                await sqlConnection.OpenAsync();
                 await command.ExecuteNonQueryAsync();
             }
-            else if(!string.IsNullOrEmpty(textBox15.Text) && !string.IsNullOrWhiteSpace(textBox15.Text))
+            else if (!string.IsNullOrEmpty(textBox15.Text) && !string.IsNullOrWhiteSpace(textBox15.Text))
             {
                 MessageBox.Show("Заполните Id");
             }
@@ -207,7 +205,176 @@ namespace CurcovaraboTA
             {
                 MessageBox.Show("Не все поля заполнены");
             }
+        }
+        private async void button7_Click(object sender, EventArgs e)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
 
+            sqlConnection = new SqlConnection(connectionString);
+            if (!string.IsNullOrEmpty(textBox12.Text) && !string.IsNullOrWhiteSpace(textBox12.Text) &&
+                !string.IsNullOrEmpty(textBox15.Text) && !string.IsNullOrWhiteSpace(textBox15.Text))
+            {
+                SqlCommand command = new SqlCommand("UPDATE [Products] SET [NameShop]=@NameShop WHERE [Id]= @Id", sqlConnection);
+
+                command.Parameters.AddWithValue("Id", textBox12.Text);
+                command.Parameters.AddWithValue("NameShop", textBox15.Text);
+
+                await sqlConnection.OpenAsync();
+                await command.ExecuteNonQueryAsync();
+            }
+            else if (!string.IsNullOrEmpty(textBox15.Text) && !string.IsNullOrWhiteSpace(textBox15.Text))
+            {
+                MessageBox.Show("Заполните Id");
+            }
+            else
+            {
+                MessageBox.Show("Вы забыли добавить название магазина");
+            }
+        }
+
+        private async void button8_Click(object sender, EventArgs e)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
+
+            sqlConnection = new SqlConnection(connectionString);
+            if (!string.IsNullOrEmpty(textBox12.Text) && !string.IsNullOrWhiteSpace(textBox12.Text) &&
+                !string.IsNullOrEmpty(textBox11.Text) && !string.IsNullOrWhiteSpace(textBox11.Text))
+            {
+                SqlCommand command = new SqlCommand("UPDATE [Products] SET [Adress] = @Adress WHERE [Id]= @Id", sqlConnection);
+
+                command.Parameters.AddWithValue("Id", textBox12.Text);
+                command.Parameters.AddWithValue("Adress", textBox11.Text);
+
+                await sqlConnection.OpenAsync();
+                await command.ExecuteNonQueryAsync();
+            }
+            else if (!string.IsNullOrEmpty(textBox15.Text) && !string.IsNullOrWhiteSpace(textBox15.Text))
+            {
+                MessageBox.Show("Заполните Id");
+            }
+            else
+            {
+                MessageBox.Show("Вы забыли добавить адресс");
+            }
+        }
+
+        private async void button9_Click(object sender, EventArgs e)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
+
+            sqlConnection = new SqlConnection(connectionString);
+            if (!string.IsNullOrEmpty(textBox12.Text) && !string.IsNullOrWhiteSpace(textBox12.Text) &&
+                !string.IsNullOrEmpty(textBox10.Text) && !string.IsNullOrWhiteSpace(textBox10.Text))
+            {
+                SqlCommand command = new SqlCommand("UPDATE [Products] SET [Code]=@Code WHERE [Id]= @Id", sqlConnection);
+
+                command.Parameters.AddWithValue("Id", textBox12.Text);
+                command.Parameters.AddWithValue("Code", textBox10.Text);
+
+                await sqlConnection.OpenAsync();
+                await command.ExecuteNonQueryAsync();
+            }
+            else if (!string.IsNullOrEmpty(textBox15.Text) && !string.IsNullOrWhiteSpace(textBox15.Text))
+            {
+                MessageBox.Show("Заполните Id");
+            }
+            else
+            {
+                MessageBox.Show("Вы забыли добавить артикул продукта");
+            }
+        }
+
+        private async void button10_Click(object sender, EventArgs e)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
+
+            sqlConnection = new SqlConnection(connectionString);
+            if (!string.IsNullOrEmpty(textBox12.Text) && !string.IsNullOrWhiteSpace(textBox12.Text) &&
+                !string.IsNullOrEmpty(textBox9.Text) && !string.IsNullOrWhiteSpace(textBox9.Text))
+            {
+                SqlCommand command = new SqlCommand("UPDATE [Products] SET [NameProducts]=@NameProducts WHERE [Id]= @Id", sqlConnection);
+
+                command.Parameters.AddWithValue("Id", textBox12.Text);
+                command.Parameters.AddWithValue("NameProducts", textBox9.Text);
+
+                await sqlConnection.OpenAsync();
+                await command.ExecuteNonQueryAsync();
+            }
+            else if (!string.IsNullOrEmpty(textBox15.Text) && !string.IsNullOrWhiteSpace(textBox15.Text))
+            {
+                MessageBox.Show("Заполните Id");
+            }
+            else
+            {
+                MessageBox.Show("Вы забыли добавить название продукта");
+            }
+
+        }
+        private async void button11_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
+
+                sqlConnection = new SqlConnection(connectionString);
+                if (!string.IsNullOrEmpty(textBox12.Text) && !string.IsNullOrWhiteSpace(textBox12.Text) &&
+                    !string.IsNullOrEmpty(textBox8.Text) && !string.IsNullOrWhiteSpace(textBox8.Text))
+                {
+                    SqlCommand command = new SqlCommand("UPDATE [Products] SET [quantity]=@quantity WHERE [Id]= @Id", sqlConnection);
+
+                    command.Parameters.AddWithValue("Id", textBox12.Text);
+                    command.Parameters.AddWithValue("quantity", textBox8.Text);
+
+                    await sqlConnection.OpenAsync();
+                    await command.ExecuteNonQueryAsync();
+                }
+                else if (!string.IsNullOrEmpty(textBox15.Text) && !string.IsNullOrWhiteSpace(textBox15.Text))
+                {
+                    MessageBox.Show("Заполните Id");
+                }
+                else
+                {
+                    MessageBox.Show("Вы забыли добавить количество продукта");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Неверный формат ввода", ex.Source.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void button12_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
+
+                sqlConnection = new SqlConnection(connectionString);
+                if (!string.IsNullOrEmpty(textBox12.Text) && !string.IsNullOrWhiteSpace(textBox12.Text) &&
+                    !string.IsNullOrEmpty(textBox7.Text) && !string.IsNullOrWhiteSpace(textBox7.Text))
+                {
+                    SqlCommand command = new SqlCommand("UPDATE [Products] SET [Price]=@Price WHERE [Id]= @Id", sqlConnection);
+
+                    command.Parameters.AddWithValue("Id", textBox12.Text);
+                    command.Parameters.AddWithValue("Price", textBox7.Text);
+
+                    await sqlConnection.OpenAsync();
+                    await command.ExecuteNonQueryAsync();
+                }
+                else if (!string.IsNullOrEmpty(textBox15.Text) && !string.IsNullOrWhiteSpace(textBox15.Text))
+                {
+                    MessageBox.Show("Заполните Id");
+                }
+                else
+                {
+                    MessageBox.Show("Вы забыли добавить цену");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Неверный формат ввода", ex.Source.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -222,17 +389,21 @@ namespace CurcovaraboTA
 
         private async void button3_Click(object sender, EventArgs e)
         {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
+
+            sqlConnection = new SqlConnection(connectionString);
+
             if (!string.IsNullOrEmpty(textBox13.Text) && !string.IsNullOrWhiteSpace(textBox13.Text))
             {
                 SqlCommand command = new SqlCommand("DELETE FROM [Products] WHERE [Id]=@Id", sqlConnection);
 
-                command.Parameters.AddWithValue("Id",textBox13.Text);
-
+                command.Parameters.AddWithValue("Id", textBox13.Text);
+                await sqlConnection.OpenAsync();
                 await command.ExecuteNonQueryAsync();
             }
             else
             {
-                MessageBox.Show("Заполните Id!");
+                MessageBox.Show("Заполните Цену!");
             }
         }
 
@@ -267,48 +438,75 @@ namespace CurcovaraboTA
         {
             textBox13.Clear();
         }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void textBox9_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabPage4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        public void metod2(string qwe)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
+
+            SqlConnection myConnection1 = new SqlConnection(connectionString);
+            myConnection1.Open();
+
+            string query = qwe;
+
+            SqlCommand command1 = new SqlCommand(query, myConnection1);
+
+            SqlDataReader reader1 = command1.ExecuteReader();
+
+            List<string[]> data = new List<string[]>();
+
+            while (reader1.Read())
+            {
+                
+                    data.Add(new string[4]);
+
+                    data[data.Count - 1][0] = reader1[0].ToString();
+                    data[data.Count - 1][1] = reader1[1].ToString();
+                    data[data.Count - 1][2] = reader1[2].ToString();
+                    data[data.Count - 1][3] = reader1[3].ToString();
+
+                    //"Select Sum(Price * quantity)FROM Products";
+                
+            }
+
+            reader1.Close();
+
+            myConnection1.Close();
+
+            foreach (string[] s in data)
+                dataGridView2.Rows.Add(s);
+        }
+    
+
+
+        private async void button13_Click(object sender, EventArgs e)
+        {
+            //string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
+            //
+            //sqlConnection = new SqlConnection(connectionString);
+            dataGridView2.Rows.Clear();
+            string qwe = "SELECT Id,NameShop,quantity,NameProducts FROM Products ORDER BY Id";
+            metod2(qwe);
+
+            //await sqlConnection.OpenAsync();
+            
+
+        }
     }
 }
-/*
- * 
- * для табуляции
- * 
- * 
- * 
- * 
- * string connectString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
- 
-        SqlConnection myConnection = new SqlConnection(connectString);
- 
-        myConnection.Open();
- 
-        string query = "SELECT * FROM Faculty ORDER BY fac_id";
- 
-        SqlCommand command = new SqlCommand(query, myConnection);
- 
-        SqlDataReader reader = command.ExecuteReader();
- 
-        List<string[]> data = new List<string[]>();
- 
-        while (reader.Read())
-        {
-            data.Add(new string[6]);
- 
-            data[data.Count - 1][0] = reader[0].ToString();
-            data[data.Count - 1][1] = reader[1].ToString();
-            data[data.Count - 1][2] = reader[2].ToString();
+
             
-            data[data.Count - 1][3] = reader[3].ToString();
-            data[data.Count - 1][4] = reader[4].ToString();
-            data[data.Count - 1][5] = reader[5].ToString();
-           
-           
-        }
- 
-        reader.Close();
- 
-        myConnection.Close();
- 
-        foreach (string[] s in data)
-            dataGridView1.Rows.Add(s);
-            */
