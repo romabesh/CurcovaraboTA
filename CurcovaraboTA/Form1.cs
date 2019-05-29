@@ -31,11 +31,9 @@ namespace CurcovaraboTA
 
         }
         public string qwe;
-
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security = True;password = 0000";
         public void metod(string qwe)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
-
             SqlConnection myConnection = new SqlConnection(connectionString);
 
             myConnection.Open();
@@ -60,9 +58,7 @@ namespace CurcovaraboTA
                 data[data.Count - 1][5] = reader[5].ToString();
                 data[data.Count - 1][6] = reader[6].ToString();
                 data[data.Count - 1][7] = reader[7].ToString();
-                //"Select Sum(Price * quantity)FROM Products";
             }
-
             reader.Close();
 
             myConnection.Close();
@@ -73,7 +69,7 @@ namespace CurcovaraboTA
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string qwe = "SELECT * FROM Products ORDER BY id";
+            string qwe = "SELECT Id, NameShop,Adress,Code,NameProducts,quantity,Price,Sum = Price*quantity FROM Products ORDER BY id";
             metod(qwe);
         }
 
@@ -96,8 +92,6 @@ namespace CurcovaraboTA
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
-
             sqlConnection = new SqlConnection(connectionString);
 
             if (!string.IsNullOrEmpty(textBox6.Text) && !string.IsNullOrWhiteSpace(textBox6.Text) &&
@@ -149,7 +143,7 @@ namespace CurcovaraboTA
 
             SqlDataReader sqlReader = null;
 
-            qwe = "SELECT * FROM[Products]";
+            qwe = "SELECT Id, NameShop,Adress,Code,NameProducts,quantity,Price,Sum FROM[Products]";
 
             SqlCommand command = new SqlCommand(qwe, sqlConnection);
             try
@@ -170,8 +164,6 @@ namespace CurcovaraboTA
 
         private async void button2_Click(object sender, EventArgs e)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
-
             sqlConnection = new SqlConnection(connectionString);
 
             if (!string.IsNullOrEmpty(textBox7.Text) && !string.IsNullOrWhiteSpace(textBox7.Text) &&
@@ -208,8 +200,6 @@ namespace CurcovaraboTA
         }
         private async void button7_Click(object sender, EventArgs e)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
-
             sqlConnection = new SqlConnection(connectionString);
             if (!string.IsNullOrEmpty(textBox12.Text) && !string.IsNullOrWhiteSpace(textBox12.Text) &&
                 !string.IsNullOrEmpty(textBox15.Text) && !string.IsNullOrWhiteSpace(textBox15.Text))
@@ -234,8 +224,6 @@ namespace CurcovaraboTA
 
         private async void button8_Click(object sender, EventArgs e)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
-
             sqlConnection = new SqlConnection(connectionString);
             if (!string.IsNullOrEmpty(textBox12.Text) && !string.IsNullOrWhiteSpace(textBox12.Text) &&
                 !string.IsNullOrEmpty(textBox11.Text) && !string.IsNullOrWhiteSpace(textBox11.Text))
@@ -260,8 +248,6 @@ namespace CurcovaraboTA
 
         private async void button9_Click(object sender, EventArgs e)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
-
             sqlConnection = new SqlConnection(connectionString);
             if (!string.IsNullOrEmpty(textBox12.Text) && !string.IsNullOrWhiteSpace(textBox12.Text) &&
                 !string.IsNullOrEmpty(textBox10.Text) && !string.IsNullOrWhiteSpace(textBox10.Text))
@@ -286,8 +272,6 @@ namespace CurcovaraboTA
 
         private async void button10_Click(object sender, EventArgs e)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
-
             sqlConnection = new SqlConnection(connectionString);
             if (!string.IsNullOrEmpty(textBox12.Text) && !string.IsNullOrWhiteSpace(textBox12.Text) &&
                 !string.IsNullOrEmpty(textBox9.Text) && !string.IsNullOrWhiteSpace(textBox9.Text))
@@ -314,8 +298,6 @@ namespace CurcovaraboTA
         {
             try
             {
-                string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
-
                 sqlConnection = new SqlConnection(connectionString);
                 if (!string.IsNullOrEmpty(textBox12.Text) && !string.IsNullOrWhiteSpace(textBox12.Text) &&
                     !string.IsNullOrEmpty(textBox8.Text) && !string.IsNullOrWhiteSpace(textBox8.Text))
@@ -348,8 +330,6 @@ namespace CurcovaraboTA
         {
             try
             {
-                string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
-
                 sqlConnection = new SqlConnection(connectionString);
                 if (!string.IsNullOrEmpty(textBox12.Text) && !string.IsNullOrWhiteSpace(textBox12.Text) &&
                     !string.IsNullOrEmpty(textBox7.Text) && !string.IsNullOrWhiteSpace(textBox7.Text))
@@ -389,8 +369,6 @@ namespace CurcovaraboTA
 
         private async void button3_Click(object sender, EventArgs e)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
-
             sqlConnection = new SqlConnection(connectionString);
 
             if (!string.IsNullOrEmpty(textBox13.Text) && !string.IsNullOrWhiteSpace(textBox13.Text))
@@ -403,8 +381,26 @@ namespace CurcovaraboTA
             }
             else
             {
+                MessageBox.Show("Заполните Id");
+            }
+        }
+        private async void button15_Click(object sender, EventArgs e)
+        {
+            sqlConnection = new SqlConnection(connectionString);
+
+            if (!string.IsNullOrEmpty(textBox17.Text) && !string.IsNullOrWhiteSpace(textBox17.Text))
+            {
+                SqlCommand command = new SqlCommand("DELETE FROM [Products] WHERE [Price]=@Price", sqlConnection);
+
+                command.Parameters.AddWithValue("Price", textBox17.Text);
+                await sqlConnection.OpenAsync();
+                await command.ExecuteNonQueryAsync();
+            }
+            else
+            {
                 MessageBox.Show("Заполните Цену!");
             }
+
         }
 
         private void label17_Click(object sender, EventArgs e)
@@ -456,8 +452,6 @@ namespace CurcovaraboTA
 
         public void metod2(string qwe)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
-
             SqlConnection myConnection1 = new SqlConnection(connectionString);
             myConnection1.Open();
 
@@ -471,18 +465,14 @@ namespace CurcovaraboTA
 
             while (reader1.Read())
             {
-                
-                    data.Add(new string[4]);
+                    data.Add(new string[5]);
 
                     data[data.Count - 1][0] = reader1[0].ToString();
                     data[data.Count - 1][1] = reader1[1].ToString();
                     data[data.Count - 1][2] = reader1[2].ToString();
                     data[data.Count - 1][3] = reader1[3].ToString();
-
-                    //"Select Sum(Price * quantity)FROM Products";
-                
+                    data[data.Count - 1][4] = reader1[4].ToString();
             }
-
             reader1.Close();
 
             myConnection1.Close();
@@ -495,16 +485,24 @@ namespace CurcovaraboTA
 
         private async void button13_Click(object sender, EventArgs e)
         {
-            //string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security=True";
-            //
-            //sqlConnection = new SqlConnection(connectionString);
+            sqlConnection = new SqlConnection(connectionString);
             dataGridView2.Rows.Clear();
-            string qwe = "SELECT Id,NameShop,quantity,NameProducts FROM Products ORDER BY Id";
+            string qwe = "SELECT Id,NameShop,quantity,NameProducts,Price FROM [Products]";
             metod2(qwe);
 
-            //await sqlConnection.OpenAsync();
+            await sqlConnection.OpenAsync();
             
 
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            textBox17.Clear();
         }
     }
 }
