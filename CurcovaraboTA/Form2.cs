@@ -16,36 +16,25 @@ namespace CurcovaraboTA
         {
             InitializeComponent();
         }
-        string Password;
-        
         private void button1_Click(object sender, EventArgs e)
         {
-            Password = "1234";
-
-            if (textBox100.Text == Password)
+            if (textBox1.Text == "человек" && textBox2.Text == "пароль123")
             {
-               
+                Form2 s = new Form2();
+                s.Show();
+                this.Hide();
             }
             else
             {
-                MessageBox.Show("Пароль не верен!");
-                textBox100.Clear();
+                MessageBox.Show("Пароль или логин не верены!");
+                textBox1.Clear();
+                textBox2.Clear();
             }
-                   
-
-            
-           
-
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
-        }
-
-        private void Form2_Load(object sender, EventArgs e)
-        {
-
+            Application.Exit();
         }
     }
 }

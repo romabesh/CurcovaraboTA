@@ -17,19 +17,13 @@ namespace CurcovaraboTA
 
         public Form1()
         {
-            InitializeComponent();
+           InitializeComponent();
 
-            //Form2 PF = new Form2();
-            //
-            //if (PF.ShowDialog() == DialogResult.Cancel)
-            //    Application.Exit();
+           Form2 PF = new Form2();
+           if (PF.ShowDialog() == DialogResult.Cancel)
+               Application.Exit();
         }
 
-        private void label13_Click(object sender, EventArgs e)
-        {
-
-
-        }
         public string qwe;
         public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\gnom9\source\repos\CurcovaraboTA\CurcovaraboTA\Database.mdf;Integrated Security = True;password = 0000";
         public void metod(string qwe)
@@ -84,12 +78,7 @@ namespace CurcovaraboTA
             if (sqlConnection != null && sqlConnection.State != ConnectionState.Closed)
                 sqlConnection.Close();
         }
-
-        private void tabPage3_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private async void button1_Click(object sender, EventArgs e)
         {
             sqlConnection = new SqlConnection(connectionString);
@@ -121,29 +110,14 @@ namespace CurcovaraboTA
                 MessageBox.Show("Не все поля заполнены");
             }
         }
-
-        private void textBox6_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox15_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void инструкцияToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
+     
         private void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             dataGridView1.Rows.Clear();
 
             SqlDataReader sqlReader = null;
 
-            qwe = "SELECT Id, NameShop,Adress,Code,NameProducts,quantity,Price,Sum FROM[Products]";
+            qwe = "SELECT Id, NameShop,Adress,Code,NameProducts,quantity,Price,Price*quantity FROM[Products]";
 
             SqlCommand command = new SqlCommand(qwe, sqlConnection);
             try
@@ -357,16 +331,6 @@ namespace CurcovaraboTA
             }
         }
 
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private async void button3_Click(object sender, EventArgs e)
         {
             sqlConnection = new SqlConnection(connectionString);
@@ -400,12 +364,6 @@ namespace CurcovaraboTA
             {
                 MessageBox.Show("Заполните Цену!");
             }
-
-        }
-
-        private void label17_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -435,21 +393,6 @@ namespace CurcovaraboTA
             textBox13.Clear();
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void textBox9_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tabPage4_Click(object sender, EventArgs e)
-        {
-
-        }
-
         public void metod2(string qwe)
         {
             SqlConnection myConnection1 = new SqlConnection(connectionString);
@@ -465,13 +408,13 @@ namespace CurcovaraboTA
 
             while (reader1.Read())
             {
-                    data.Add(new string[5]);
+                data.Add(new string[5]);
 
-                    data[data.Count - 1][0] = reader1[0].ToString();
-                    data[data.Count - 1][1] = reader1[1].ToString();
-                    data[data.Count - 1][2] = reader1[2].ToString();
-                    data[data.Count - 1][3] = reader1[3].ToString();
-                    data[data.Count - 1][4] = reader1[4].ToString();
+                data[data.Count - 1][0] = reader1[0].ToString();
+                data[data.Count - 1][1] = reader1[1].ToString();
+                data[data.Count - 1][2] = reader1[2].ToString();
+                data[data.Count - 1][3] = reader1[3].ToString();
+                data[data.Count - 1][4] = reader1[4].ToString();
             }
             reader1.Close();
 
@@ -481,25 +424,16 @@ namespace CurcovaraboTA
                 dataGridView2.Rows.Add(s);
         }
     
-
-
         private async void button13_Click(object sender, EventArgs e)
         {
             sqlConnection = new SqlConnection(connectionString);
             dataGridView2.Rows.Clear();
-            string qwe = "SELECT Id,NameShop,quantity,NameProducts,Price FROM [Products]";
+            string qwe = "SELECT Id,NameShop,quantity,NameProducts,Price FROM Products"; 
             metod2(qwe);
 
             await sqlConnection.OpenAsync();
-            
-
         }
-
-        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-
-        }
-
+        
         private void button14_Click(object sender, EventArgs e)
         {
             textBox17.Clear();
